@@ -21,7 +21,6 @@ contract FT42 is ERC20, Ownable {
 	}
 
 	bool public transferStatus;
-	uint256 public jackpot;
 	Duel[] public duels;
 
 	event DuelCreated(uint256 indexed id);
@@ -30,7 +29,6 @@ contract FT42 is ERC20, Ownable {
 	constructor(uint256 initialSupply) ERC20("FT42", "FT42") Ownable(_msgSender()) {
 		_mint(_msgSender(), initialSupply);
 		transferStatus = true;
-		jackpot = 0;
 	}
 
 	modifier validId(uint256 id) {
@@ -52,7 +50,7 @@ contract FT42 is ERC20, Ownable {
 		return super.transferFrom(from, to, value);
 	}
 
-	function opponents(uint256 id) public view validId(id) returns (address[2] memory) {
+	function opponents(uint256 id) public view returns (address[2] memory) {
 		return duels[id].opponents;
 	}
 
@@ -85,7 +83,7 @@ contract FT42 is ERC20, Ownable {
 
 	function startDuel(uint256 id) public validId(id) returns (address) {
 		Duel storage duel = duels[id];
-		if (_msgSender() != duel.opponents[0] || _msgSender() != duel.opponents[1] || duel.status != Status.READY) {
+		if ((_msgSender() != duel.opponents[0] && _msgSender() != duel.opponents[1]) || duel.status != Status.READY) {
 			revert("you cannot start this duel");
 		}
 		uint256 rand = generateRandomNumber() % 2;

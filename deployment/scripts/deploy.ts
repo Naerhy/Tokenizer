@@ -3,9 +3,7 @@ import { ethers } from "hardhat";
 async function main(): Promise<void> {
 	try {
 		const initialSupply = 10000000;
-		const contract = await ethers.deployContract("FT42", [
-			ethers.parseEther(initialSupply.toString())
-		]);
+		const contract = await ethers.deployContract("FT42", [ethers.parseEther(initialSupply.toString())]);
 
 		await contract.waitForDeployment();
 

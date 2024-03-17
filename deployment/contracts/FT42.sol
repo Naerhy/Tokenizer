@@ -104,6 +104,10 @@ contract FT42 is ERC20, Ownable {
 		duel.status = Status.CANCELLED;
 	}
 
+	function duelsCount() public view returns (uint256) {
+		return duels.length;
+	}
+
 	function generateRandomNumber() private view returns (uint256) {
 		return uint256(keccak256(abi.encodePacked(tx.origin, blockhash(block.number - 1), block.timestamp)));
 	}

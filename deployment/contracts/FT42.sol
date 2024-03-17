@@ -24,6 +24,9 @@ contract FT42 is ERC20, Ownable {
 	uint256 public jackpot;
 	Duel[] public duels;
 
+	event DuelCreated(uint256 indexed id);
+	event DuelEnded(uint256 indexed id, address winner);
+
 	constructor(uint256 initialSupply) ERC20("FT42", "FT42") Ownable(_msgSender()) {
 		_mint(_msgSender(), initialSupply);
 		transferStatus = true;
@@ -55,6 +58,7 @@ contract FT42 is ERC20, Ownable {
 
 	function createDuel(address opponent, uint256 bid) public returns (uint256) {
 		require(opponent != _msgSender(), "you cannot set yourself as opponent");
+		uint256 duelId = duels.length;
 		duels.push(
 			Duel({
 				opponents: [_msgSender(), opponent],
@@ -65,7 +69,8 @@ contract FT42 is ERC20, Ownable {
 			})
 		);
 		transfer(address(this), bid);
-		return duels.length - 1;
+		emit DuelCreated(duelId);
+		return duelId;
 	}
 
 	function acceptDuel(uint256 id) public validId(id) {
@@ -88,6 +93,7 @@ contract FT42 is ERC20, Ownable {
 		duel.winner = winner;
 		_transfer(address(this), winner, duel.depositedAmount);
 		duel.status = Status.DONE;
+		emit DuelEnded(id, winner);
 		return winner;
 	}
 

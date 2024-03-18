@@ -1,20 +1,20 @@
 import { loadFixture } from "@nomicfoundation/hardhat-toolbox/network-helpers";
 import { expect } from "chai";
-import { ethers } from "hardhat";
+import hre from "hardhat";
 
 describe("FT42", function () {
 	async function deployFT42Fixture() {
 		const DECIMALS = 18;
 		const amounts: { [key: string]: bigint } = {
-			initial: ethers.parseUnits("1000000", DECIMALS),
-			s5000: ethers.parseUnits("5000", DECIMALS),
-			s1000: ethers.parseUnits("1000", DECIMALS),
-			s500: ethers.parseUnits("500", DECIMALS),
-			s100: ethers.parseUnits("100", DECIMALS),
-			s50: ethers.parseUnits("50", DECIMALS)
+			initial: hre.ethers.parseUnits("1000000", DECIMALS),
+			s5000: hre.ethers.parseUnits("5000", DECIMALS),
+			s1000: hre.ethers.parseUnits("1000", DECIMALS),
+			s500: hre.ethers.parseUnits("500", DECIMALS),
+			s100: hre.ethers.parseUnits("100", DECIMALS),
+			s50: hre.ethers.parseUnits("50", DECIMALS)
 		};
-		const [owner, account1, account2] = await ethers.getSigners();
-		const factory = await ethers.getContractFactory("FT42");
+		const [owner, account1, account2] = await hre.ethers.getSigners();
+		const factory = await hre.ethers.getContractFactory("FT42");
 		const contract = await factory.deploy(amounts.initial);
 		await contract.transfer(account1, amounts.s1000);
 		await contract.transfer(account2, amounts.s500);
@@ -60,7 +60,7 @@ describe("FT42", function () {
 			expect(await contract.balanceOf(account1.address)).to.be.equal(amounts.s1000 - amounts.s100);
 			expect(bid).to.equal(amounts.s100);
 			expect(depositedAmount).to.equal(amounts.s100);
-			expect(winner).to.equal(ethers.ZeroAddress);
+			expect(winner).to.equal(hre.ethers.ZeroAddress);
 			expect(status).to.equal(0);
 			await expect(contract.duels(3)).to.be.reverted;
 		});

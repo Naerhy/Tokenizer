@@ -15,6 +15,11 @@ contract Multisig {
 	Transaction[] public transactions;
 	mapping(uint256 => mapping(address => bool)) public transactionsSignatures;
 
+	event SubmitTransaction(uint256 indexed id, address indexed caller);
+	event ConfirmTransaction(uint256 indexed id, address indexed caller);
+	event RevokeTransaction(uint256 indexed id, address indexed caller);
+	event ExecuteTransaction(uint256 indexed id);
+
 	constructor(address _contractAddr, uint256 _nbReqSignatures, address[] memory _signers) {
 		require(_nbReqSignatures > 2, "require more than 2 signers");
 		require(_signers.length >= _nbReqSignatures, "not enough signers");
@@ -53,6 +58,7 @@ contract Multisig {
 
 	function submitTransaction(bytes calldata _data) public onlySigner returns (uint256) {
 		transactions.push(Transaction(_data, 0, false));
+		emit SubmitTransaction(transactions.length - 1, msg.sender);
 		return transactions.length - 1;
 	}
 
@@ -61,6 +67,7 @@ contract Multisig {
 		Transaction storage transaction = transactions[id];
 		transaction.nbSignatures++;
 		transactionsSignatures[id][msg.sender] = true;
+		emit ConfirmTransaction(id, msg.sender);
 	}
 
 	function revokeTransaction(uint256 id) public onlySigner existingTransaction(id) notExecuted(id) {
@@ -68,6 +75,7 @@ contract Multisig {
 		Transaction storage transaction = transactions[id];
 		transaction.nbSignatures--;
 		transactionsSignatures[id][msg.sender] = false;
+		emit RevokeTransaction(id, msg.sender);
 	}
 
 	function executeTransaction(uint256 id) public onlySigner existingTransaction(id) notExecuted(id) {
@@ -76,6 +84,7 @@ contract Multisig {
 		(bool success,) = contractAddr.call(transaction.data);
 		require(success, "transaction failed");
 		transaction.executed = true;
+		emit ExecuteTransaction(id);
 	}
 
 	function transactionsCount() public view returns (uint256) {

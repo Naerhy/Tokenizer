@@ -14,8 +14,7 @@ describe("FT42", function () {
 			s50: hre.ethers.parseUnits("50", DECIMALS)
 		};
 		const [owner, account1, account2] = await hre.ethers.getSigners();
-		const factory = await hre.ethers.getContractFactory("FT42");
-		const contract = await factory.deploy(amounts.initial);
+		const contract = await hre.ethers.deployContract("FT42", [amounts.initial]);
 		await contract.transfer(account1, amounts.s1000);
 		await contract.transfer(account2, amounts.s500);
 		return { contract, owner, account1, account2, amounts };

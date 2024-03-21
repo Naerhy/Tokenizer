@@ -6,7 +6,6 @@
 	"scripts": {
 		"compile": "hardhat compile",
 		"test": "hardhat test",
-		"deploy": "hardhat ignition deploy ./ignition/modules/FT42.ts",
 		"clean": "hardhat clean",
 		"format": "prettier --write ."
 	},

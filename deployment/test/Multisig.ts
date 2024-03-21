@@ -6,7 +6,11 @@ describe("Multisig", function () {
 	async function deployMultisigFixture() {
 		const [owner, account1, account2, account3] = await hre.ethers.getSigners();
 		const ft42 = await hre.ethers.deployContract("FT42", [hre.ethers.parseUnits("1000000", 18)]);
-		const multisig = await hre.ethers.deployContract("Multisig", [await ft42.getAddress(), 3, [account1.address, account2.address, account3.address]]);
+		const multisig = await hre.ethers.deployContract("Multisig", [
+			await ft42.getAddress(),
+			3,
+			[account1.address, account2.address, account3.address]
+		]);
 		return { ft42, multisig, owner, account1, account2, account3 };
 	}
 

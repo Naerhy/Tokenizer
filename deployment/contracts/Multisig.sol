@@ -81,7 +81,7 @@ contract Multisig {
 	function executeTransaction(uint256 id) public onlySigner existingTransaction(id) notExecuted(id) {
 		Transaction storage transaction = transactions[id];
 		require(transaction.nbSignatures >= nbReqSignatures, "transaction requires additional signers");
-		(bool success,) = contractAddr.call(transaction.data);
+		(bool success, ) = contractAddr.call(transaction.data);
 		require(success, "transaction failed");
 		transaction.executed = true;
 		emit ExecuteTransaction(id);

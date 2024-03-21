@@ -1,0 +1,11 @@
+{
+	"MultisigModule": {
+		"contractAddr": "0xBd7218cA598C5bdB89B2375b5df43F805b56E39F",
+		"nbReqSignatures": 3,
+		"signers": [
+			"0x40Eab4E76Cd30bbeDB1a523c089c0522dE1670a4",
+			"0xd100A345030303fA969849acf2009056C5DfbF0c",
+			"0x929B8e961dCa378e2BE0f95832a7c013Fa9997a6"
+		]
+	}
+}

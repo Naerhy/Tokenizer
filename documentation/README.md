@@ -2,9 +2,9 @@
 
 ## FT42
 
-In addition to complying with the ERC20 standard thanks to the OpenZeppelin contracts ([API](https://docs.openzeppelin.com/contracts/5.x/api/token/erc20#ERC20)), the FT42 smart contract adds 2 new features.
-First, it implements a duel system where users can challenge each others in order to possibly win the opponent's tokens in play (winner is randomly picked).  
-Secondly, the owner of the contract has the option to toggle on and off the tokens transfers.
+In addition to complying with the ERC20 standard thanks to the OpenZeppelin contracts ([API](https://docs.openzeppelin.com/contracts/5.x/api/token/erc20#ERC20)), the FT42 smart contract adds 2 new features:
+- it implements a duel system where users can challenge each others in order to possibly win the opponent's tokens in play (winner is randomly picked)
+- the owner of the contract has the option to toggle on and off the tokens transfers
 
 ## Multisig
 
